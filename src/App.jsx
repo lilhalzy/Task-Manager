@@ -18,7 +18,7 @@ function App() {
 
     const addTask = () => {
       if (newTask.trim() == '') return;
-      setTasks([...tasks, {id: Date.now(), text: newTask}])
+      setTasks([...tasks, {id: Date.now(), text: newTask, completed: false}])
       setNewTask('')
     }
 
@@ -26,13 +26,18 @@ function App() {
       setTasks(tasks.filter((task) => task.id !== id))
   }
 
+    const toggleTask = (id) => {
+      setTasks(
+        tasks.map((task) => task.id === id ? {...task, completed: !task.completed} : task)
+      )
+    }
 
   return (
     <div className="max-w-lg mx-auto p-4">
       <h1 className="text-3xl font-bold text-white-800 text-center mb-2">
         Task Manager
       </h1>
-      <p className="text-md italic text-white-200 text-center mb-6">Create you personalised task</p>
+      <p className="text-md italic text-white-200 text-center mb-6">Create your personalised task</p>
       {/* Input Form */}
       <form onSubmit={(e) => {
         e.preventDefault()
@@ -61,21 +66,31 @@ function App() {
           [...tasks].reverse().map((task, idx) => (
             <div
               key={task.id}
-              className={`${colorPattern[idx % colorPattern.length]} p-3 rounded-md shadow-sm flex justify-between items-center`}
+              className={`${colorPattern[idx % colorPattern.length]} p-3 rounded-md shadow-sm flex justify-between items-center select-none`}
             >
-              <span className="text-gray-700">{task.text}</span>
-              <button
-                onClick={() => deleteTask(task.id)}
-                className="bg-red-500 rounded-md px-2 py-1 hover:bg-red-600"
-              >
-                <TrashIcon className='h-5 w-5 text-white-500'/>
-              </button>
-            </div>
-          ))
-        )}
-      </div>
+            <span
+              onClick={() => toggleTask(task.id)}
+              className={`text-gray-700 cursor-pointer ${task.completed ? 'line-through text-gray-400' : ''}`}
+            >
+              {task.text}
+            </span>
+            <button
+              onClick={() => deleteTask(task.id)}
+              className="bg-red-500 rounded-md px-2 py-1 hover:bg-red-600"
+            >
+              <TrashIcon className='h-5 w-5 text-white'/>
+            </button>
+          </div>
+        ))
+      )}
+      {tasks.length > 0 && (
+        <p className="text-sm text-gray-500 italic text-center mt-2">
+          Click on any tasks to mark it complete
+        </p>
+      )}
     </div>
-  );
+  </div>
+  )
 }
 
 export default App

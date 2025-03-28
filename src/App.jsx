@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react'
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { saveTasks, loadTasks } from './utils/localStorage';
 import './App.css'
 
 function App() {
     const [tasks, setTasks] = useState(() => {
-      const savedTasks = localStorage.getItem('tasks')
-      return savedTasks ? JSON.parse(savedTasks) : []
+      const savedTasks = loadTasks('tasks')
+      return savedTasks || []
     })
     const [newTask, setNewTask] = useState('')
 
     const colorPattern = ['bg-white', 'bg-gray-400']
 
     useEffect(() => {
-      localStorage.setItem('tasks', JSON.stringify(tasks))
+      saveTasks('tasks', tasks)
     }, [tasks])
 
     const addTask = () => {

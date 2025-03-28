@@ -1,17 +1,23 @@
 import { useState } from 'react'
+import { TrashIcon } from "@heroicons/react/24/outline";
 import './App.css'
 
 function App() {
-  const [tasks, setTasks] = useState([])
-  const [newTask, setNewTask] = useState('')
+    const [tasks, setTasks] = useState([])
+    const [newTask, setNewTask] = useState('')
 
-  const colorPattern = ['bg-white', 'bg-gray-400']
+    const colorPattern = ['bg-white', 'bg-gray-400']
 
-  const addTask = () => {
-    if (newTask.trim() == '') return;
-    setTasks([...tasks, {id: Date.now(), text: newTask}])
-    setNewTask('')
+    const addTask = () => {
+      if (newTask.trim() == '') return;
+      setTasks([...tasks, {id: Date.now(), text: newTask}])
+      setNewTask('')
+    }
+
+    const deleteTask = (id) => {
+      setTasks(tasks.filter((task) => task.id !== id))
   }
+
 
   return (
     <div className="max-w-lg mx-auto p-4">
@@ -50,6 +56,12 @@ function App() {
               className={`${colorPattern[idx % colorPattern.length]} p-3 rounded-md shadow-sm flex justify-between items-center`}
             >
               <span className="text-gray-700">{task.text}</span>
+              <button
+                onClick={() => deleteTask(task.id)}
+                className="bg-red-500 rounded-md px-2 py-1 hover:bg-red-600"
+              >
+                <TrashIcon className='h-5 w-5 text-white-500'/>
+              </button>
             </div>
           ))
         )}

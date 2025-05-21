@@ -1,14 +1,6 @@
-@import "tailwindcss";
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
-.task-text {
-  transition: all .2s ease;
-}
-.task-text:hover {
-  transform: translateX(8px);
-  color: #3b82f6; /* blue-500 */
 }
